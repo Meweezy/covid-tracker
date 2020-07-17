@@ -152,17 +152,34 @@
               <div id="map"></div>
             </div>
             <div id="line-chart-container" class="line-chart-container">
-              <h5 class="d-none">Cases In The Last 150 days</h5>
               <div>
-                <h5>Cases In The Last 150 Days</h5>
+                <h5>Top Headlines <span class="news-location"></span></h5>
                 <!-- <canvas
                   data-bs-chart='{"type":"line","data":{"labels":["January","February","March","April","May","June"],"datasets":[{"label":"Revenue","backgroundColor":"#4e73df","borderColor":"#4e73df","data":["4500","5300","6250","7800","9800","15000"],"fill":true}]},"options":{"maintainAspectRatio":true,"legend":{"display":false,"reverse":false,"position":"top"},"title":{"display":true,"text":"Cases In The Last 150 Days"},"scales":{"xAxes":[{"gridLines":{"drawBorder":true,"drawTicks":false,"borderDash":["0"],"zeroLineBorderDash":["0"],"drawOnChartArea":true},"ticks":{"beginAtZero":false}}],"yAxes":[{"gridLines":{"drawBorder":true,"drawTicks":false,"borderDash":["0"],"zeroLineBorderDash":["0"],"drawOnChartArea":true},"ticks":{"beginAtZero":false}}]}}}'
                 ></canvas> -->
-                <canvas id="myChart"></canvas>
+                <!-- <canvas id="myChart"></canvas> -->
               </div>
             </div>
           </div>
           <div class="col-auto col-sm-12 col-md-12 col-lg-5 col-xl-5">
+            <div class="row no-gutters">
+              <div class="col-5 recovery-rate">
+                <h3>Global Recovery Rate</h3>
+                <div class="radial-circle-outer">
+                  <div class="radial-circle-inner recover">
+                    0
+                  </div>
+                </div>
+              </div>
+              <div class="col-5 fatality-rate">
+                <h3>Global Fatality Rate</h3>
+                <div class="radial-circle-outer">
+                  <div class="radial-circle-inner-death">
+                    0
+                  </div>
+                </div>
+              </div>
+            </div>
             <div id="table-container" class="table-container">
               <p>Cases Per Country</p>
               <div class="table-responsive">
@@ -170,10 +187,16 @@
                   <thead>
                     <tr>
                       <th scope="col">Country</th>
-                      <th scope="col"></th>
+
                       <th scope="col">Infected</th>
-                      <th scope="col">Recovered</th>
-                      <th scope="col">Deaths</th>
+                      <th class="additional-info" scope="col">
+                        Recovered
+                      </th>
+
+                      <th class="additional-info" scope="col">Deaths</th>
+                      <th scope="col">
+                        <i class="material-icons">trending_up</i>
+                      </th>
                     </tr>
                   </thead>
                   <tbody id="tableOnPage">
@@ -193,13 +216,15 @@
                 </table>
               </div>
             </div>
-            <div id="pie-chart-container" class="pie-chart-container">
-              <p class="text-center">Global Distribution of Cases</p>
+            <div id="line-chart-container" class="line-chart-container">
+              <!-- <p class="text-center">Global Distribution of Cases</p> -->
+              <h6 class="text-center">Cases In The Last 150 days</h6>
               <div>
                 <!-- <canvas
                   data-bs-chart='{"type":"doughnut","data":{"labels":["January","February","March"],"datasets":[{"label":"Revenue","backgroundColor":["red","green","orange"],"borderColor":["rgba(0,0,0,0.1)","rgba(0,0,0,0.1)","rgba(0,0,0,0.1)"],"data":["4500","5300","6250"]}]},"options":{"maintainAspectRatio":true,"legend":{"display":false},"title":{}}}'
                 ></canvas> -->
-                <canvas id="pieChart"></canvas>
+                <!-- <canvas id="pieChart"></canvas> -->
+                <canvas id="myChart"></canvas>
               </div>
             </div>
           </div>
@@ -214,6 +239,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
     <script src="assets/js/bs-init.js"></script>

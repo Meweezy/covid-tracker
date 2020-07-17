@@ -3,6 +3,7 @@ let markers = [];
 let countries;
 let map;
 let recoveryRate;
+let fatalityRate;
 let globalCountryData;
 let mapCircles = [];
 var casesTypeColors = {
@@ -19,7 +20,7 @@ window.onload = () => {
   getHistoricalData();
   // buildPieChart();
   getCurrentData();
-  calcRecoveryRate();
+  // calcRecoveryRate();
 };
 
 function initMap() {
@@ -71,9 +72,10 @@ const getCurrentData = () => {
     .then((data) => {
       // console.log(data);
       // let chartData = buildPieChartData(data);
-      buildPieChart(data);
+      // buildPieChart(data);
       updateCurrentTabs(data);
-      // calcRecoveryRate(data);
+      calcRecoveryRate(data);
+      calcFatalityRate(data);
     });
 };
 
@@ -293,23 +295,25 @@ const showDataOnMap = (data, casesType = "cases") => {
 
     var html = `
     <div class="info-container">
-    <div class="info-flag" style="background-image: url(${
-      country.countryInfo.flag
-    })"></div>
+    <div class="info-header">
+      <div class="info-flag" style="background-image: url(${
+        country.countryInfo.flag
+      })"></div>
 
         <div class="info-name">${country.country}</div>
-        <div class="info-confirmed">Total Cases: ${numeral(
+    </div>
+        <div class="info-confirmed">Total Cases:<span> ${numeral(
           country.cases
-        ).format("0,0")}</div>
-        <div class="info-active">Active Cases: ${numeral(country.active).format(
-          "0,0"
-        )}</div>
-        <div class="info-deaths">Total Deaths: ${numeral(country.deaths).format(
-          "0,0"
-        )}</div>
-        <div class="info-recovered">Total Recovered: ${numeral(
+        ).format("0,0")}</span></div>
+        <div class="info-active">Active Cases:<span> ${numeral(
+          country.active
+        ).format("0,0")}</span></div>
+        <div class="info-deaths">Total Deaths:<span> ${numeral(
+          country.deaths
+        ).format("0,0")}</span></div>
+        <div class="info-recovered">Total Recovered:<span> ${numeral(
           country.recovered
-        ).format("0,0")}</div>
+        ).format("0,0")}</span></div>
     </div>
   
     `;
@@ -359,13 +363,22 @@ const showDataInTable = (data) => {
     html += `
     
           <tr>
-            <td><img width = 40px src="${country.countryInfo.flag}" /></td>
-            <td>
-                ${country.country}   
+          
+            <td class="country-flag">
+            <img width = 40px src="${country.countryInfo.flag}" />
+            <span>
+                ${country.country}   </span>
             </td>
             <td>${numeral(country.cases).format("0,0")}</td>
-           <td>${numeral(country.recovered).format("0,0")}</td>
-           <td>${numeral(country.deaths).format("0,0")}</td>
+           
+           <td class="additional-info">${numeral(country.recovered).format(
+             "0,0"
+           )}</td>
+           <td class="additional-info">${numeral(country.deaths).format(
+             "0,0"
+           )}</td>
+           <td>${numeral(country.todayCases).format("+0,0")}</td>
+           
          </tr>
       
       
@@ -525,6 +538,7 @@ const updateMap = (id) => {
 const calcRecoveryRate = (currentData) => {
   let totalGlobalCases = currentData.cases;
   let totalRecovered = currentData.recovered;
+
   // let recoverySpan = document.getElementById("recoverySpan");
   recoveryRate = Math.round((totalRecovered / totalGlobalCases) * 100);
   // console.log("Recovery Rate: " + recoveryRate + "%");
@@ -534,6 +548,20 @@ const calcRecoveryRate = (currentData) => {
   ).innerHTML = `<div id="recoverySpan" data-target="${recoveryRate}"></div><span>%</span>`;
 
   animateRecoveryRate();
+};
+const calcFatalityRate = (currentData) => {
+  let totalGlobalCases = currentData.cases;
+  let totalDeaths = currentData.deaths;
+
+  // let recoverySpan = document.getElementById("recoverySpan");
+  fatalityRate = Math.round((totalDeaths / totalGlobalCases) * 100);
+  // console.log("Recovery Rate: " + recoveryRate + "%");
+  // recoverySpan.innerHTML = `${recoveryRate}%`;
+  document.querySelector(
+    ".radial-circle-inner-death"
+  ).innerHTML = `<div id="fatalitySpan" data-target="${fatalityRate}"></div><span>%</span>`;
+
+  animateFatalityRate();
 };
 
 //animation code for the recovery rate card
@@ -549,6 +577,23 @@ const animateRecoveryRate = () => {
   if (count < target) {
     counter.innerText = count + increment;
     setTimeout(animateRecoveryRate, 1);
+  } else {
+    counter.innerText = target;
+  }
+};
+//animation code for the fatality rate card
+const animateFatalityRate = () => {
+  const counter = document.querySelector("#fatalitySpan");
+  const speed = 50;
+
+  const target = +counter.getAttribute("data-target");
+  const count = +counter.innerText;
+  const increment = Math.ceil(target / speed);
+  // const increment = 2;
+
+  if (count < target) {
+    counter.innerText = count + increment;
+    setTimeout(animateFatalityRate, 1);
   } else {
     counter.innerText = target;
   }

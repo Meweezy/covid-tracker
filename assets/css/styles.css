@@ -197,6 +197,11 @@ body {
   border-radius: 20px 0px 0px 20px;
 }
 
+#map {
+  height: 500px;
+  border-radius: 12px;
+}
+
 .footer {
   background-color: inherit;
   height: 100px;
@@ -287,7 +292,13 @@ body {
 }
 
 .table-container table {
-  font-size: 1rem;
+  font-size: 0.8rem;
+}
+
+.table-container {
+  margin-top: 170px;
+  height: 611px;
+  overflow-y: scroll;
 }
 
 .stats-container .card {

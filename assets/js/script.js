@@ -73,31 +73,25 @@ const getCurrentData = () => {
       // let chartData = buildPieChartData(data);
       buildPieChart(data);
       updateCurrentTabs(data);
-      calcRecoveryRate(data);
+      // calcRecoveryRate(data);
     });
 };
 
-const updateCurrentTabs = (currentData) => {
-  document
-    .getElementById("tabTotal")
-    .querySelector(".card-subtitle").innerHTML = numeral(
-    currentData.cases
-  ).format("0,0");
-  document
-    .getElementById("tabActive")
-    .querySelector(".card-subtitle").innerHTML = numeral(
-    currentData.active
-  ).format("0,0");
-  document
-    .getElementById("tabRecovered")
-    .querySelector(".card-subtitle").innerHTML = numeral(
-    currentData.recovered
-  ).format("0,0");
-  document
-    .getElementById("tabDeaths")
-    .querySelector(".card-subtitle").innerHTML = numeral(
-    currentData.deaths
-  ).format("0,0");
+const updateCurrentTabs = (data) => {
+  let addedCases = numeral(data.todayCases).format("+0,0");
+  let addedRecovered = numeral(data.todayRecovered).format("+0,0");
+  let addedDeaths = numeral(data.todayDeaths).format("+0,0");
+  let totalCases = numeral(data.cases).format("0.0a");
+  let totalRecovered = numeral(data.recovered).format("0.0a");
+  let totalDeaths = numeral(data.deaths).format("0.0a");
+  document.querySelector(".total-number").innerHTML = addedCases;
+  document.querySelector(".recovered-number").innerHTML = addedRecovered;
+  document.querySelector(".deaths-number").innerHTML = addedDeaths;
+  document.querySelector(".cases-total").innerHTML = `${totalCases} Total`;
+  document.querySelector(
+    ".recovered-total"
+  ).innerHTML = `${totalRecovered} Total`;
+  document.querySelector(".deaths-total").innerHTML = `${totalDeaths} Total`;
 };
 
 //build pie chart
@@ -365,7 +359,7 @@ const showDataInTable = (data) => {
     html += `
     
           <tr>
-            <td><img width = 60px src="${country.countryInfo.flag}" /></td>
+            <td><img width = 40px src="${country.countryInfo.flag}" /></td>
             <td>
                 ${country.country}   
             </td>

@@ -8,7 +8,6 @@ let globalCountryData;
 let mapCircles = [];
 var casesTypeColors = {
   cases: "#3e444a",
-  active: "#f9a825",
   recovered: "#00C853",
   deaths: "#fc3c3c",
 };
@@ -27,6 +26,7 @@ window.onload = () => {
   // buildPieChart();
   getCurrentData();
   // calcRecoveryRate();
+  // console.log(new Date(1595079209 * 1000).toLocaleString());
 };
 const mapCenter = {
   lat: 34.80746,
@@ -49,9 +49,10 @@ function initMap() {
   // //Get JSON Data
 }
 
-const changeDataSelection = (casesType) => {
+const changeDataSelection = (elem, casesType) => {
   clearTheMap();
   showDataOnMap(globalCountryData, casesType);
+  console.log(globalCountryData);
 };
 
 const clearTheMap = () => {
@@ -61,12 +62,14 @@ const clearTheMap = () => {
 };
 
 //function to pan to selected location
-const setMapCenter = (lat, long, zoom) => {
+const setMapCenter = (lat, long, zoom, countryName = "Global") => {
   map.setZoom(zoom);
   map.panTo({
     lat: lat,
     lng: long,
   });
+  document.querySelector(".cases-location").innerHTML = countryName;
+  // console.log(document.querySelector(".cases-location").innerHTML);
 };
 
 //initialize country dropdown
@@ -119,7 +122,12 @@ const getCountryData = (countryIso = "") => {
       return response.json();
     })
     .then((data) => {
-      setMapCenter(data.countryInfo.lat, data.countryInfo.long, 4);
+      setMapCenter(
+        data.countryInfo.lat,
+        data.countryInfo.long,
+        4,
+        data.country
+      );
       updateCurrentTabs(data);
       console.log(data);
     });
@@ -340,7 +348,6 @@ const showDataOnMap = (data, casesType = "cases") => {
       lat: country.countryInfo.lat,
       lng: country.countryInfo.long,
     };
-
     var countryCircle = new google.maps.Circle({
       strokeColor: casesTypeColors[casesType],
       strokeOpacity: 0.8,

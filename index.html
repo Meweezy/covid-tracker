@@ -65,6 +65,15 @@
       </div>
       <div class="heading-container">
         <h1>COVID-19 TRACKER</h1>
+        <!-- Search bar Here -->
+        <div id="search-container" class="search-container">
+          <div class="ui fluid search selection dropdown">
+            <input type="hidden" name="country" />
+            <i class="dropdown icon"></i>
+            <div class="default text">Select Country</div>
+            <div class="menu"></div>
+          </div>
+        </div>
       </div>
     </div>
     <div
@@ -93,11 +102,14 @@
         </div>
       </div>
       <div id="main" class="main">
-        <div class="row">
+        <div class="row dashboard">
           <div class="col-auto col-sm-12 col-md-12 col-lg-7 col-xl-7">
             <div id="stats-container" class="row stats-container">
               <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                <div class="card cases">
+                <div
+                  class="card cases"
+                  onclick="changeDataSelection(this,'cases');"
+                >
                   <div class="tab-selection"></div>
                   <div class="card-body">
                     <h5 class="card-title">Infected</h5>
@@ -109,7 +121,10 @@
                 </div>
               </div>
               <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                <div class="card recovered">
+                <div
+                  class="card recovered"
+                  onclick="changeDataSelection(this,'recovered');"
+                >
                   <div class="tab-selection"></div>
                   <div class="card-body">
                     <h5 class="card-title">Recovered</h5>
@@ -121,7 +136,10 @@
                 </div>
               </div>
               <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                <div class="card deaths">
+                <div
+                  class="card deaths"
+                  onclick="changeDataSelection(this,'deaths');"
+                >
                   <div class="tab-selection"></div>
                   <div class="card-body">
                     <h5 class="card-title">Deaths</h5>
@@ -134,39 +152,11 @@
               </div>
             </div>
             <div id="map-container" class="map-container">
-              <!-- <div id="search-container" class="search-container">
-                <input
-                  class="d-none float-none"
-                  type="text"
-                  id="search-top-bar"
-                  placeholder="Search Country"
-                  style="font-size: 14px;"
-                /><i class="fa fa-search d-none" id="search-icon"></i>
-                <div class="input-group">
-                  <input
-                    class="form-control"
-                    type="text"
-                    id="search-box"
-                    placeholder="Search Country"
-                  />
-                  <div class="input-group-append">
-                    <button
-                      class="btn btn-primary"
-                      id="input-group-btn"
-                      type="button"
-                    >
-                      <i class="fa fa-search"></i>
-                    </button>
-                  </div>
-                </div>
-              </div> -->
-              <div id="search-container" class="search-container">
-                <div class="ui fluid search selection dropdown">
-                  <input type="hidden" name="country" />
-                  <i class="dropdown icon"></i>
-                  <div class="default text">Select Country</div>
-                  <div class="menu"></div>
-                </div>
+              <div class="map-header">
+                <h5>
+                  Coronavirus Cases - <span class="cases-location">Global</span>
+                </h5>
+                <p>Last Updated: 11mins ago</p>
               </div>
               <div id="map"></div>
             </div>

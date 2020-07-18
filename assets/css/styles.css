@@ -9,7 +9,7 @@ body {
 
 .top-bar {
   width: 100%;
-  height: 100px;
+  height: 80px;
   padding: 15px 25px;
   display: inline-flex;
   align-items: center;
@@ -37,6 +37,10 @@ body {
   }
 }
 
+.dashboard {
+  max-width: 1600px;
+}
+
 .stats-container h5 {
   font-size: 0.9rem;
 }
@@ -54,6 +58,12 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.stats-container .card:hover {
+  transform: scale(1.03);
+  /* transition: 0.3s ease-in-out; */
 }
 
 @media (max-width: 576px) {
@@ -84,12 +94,25 @@ body {
 
 .search-container {
   display: flex;
-  max-width: 600px;
+  width: 280px;
   padding: 5px;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  /* margin-left: 30px; */
   position: relative;
+  z-index: 1000;
+}
+@media (width: 1024px) {
+  .search-container {
+    margin-left: 90px;
+  }
+}
+@media (min-width: 1500px) {
+  .search-container {
+    width: 420px;
+  }
 }
 
 .side-menu {
@@ -280,14 +303,31 @@ body {
   display: flex;
   width: 100%;
   padding: 5px;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
+.heading-container h1 {
+  margin-right: 30px;
+  font-size: 0.8rem;
+  width: 250px;
+}
 
-@media (max-width: 576px) {
+@media (min-width: 425px) {
   .heading-container h1 {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
+    width: 430px;
   }
+}
+@media (min-width: 768px) {
+  .heading-container h1 {
+    font-size: 1.8rem;
+    margin-left: 30px;
+  }
+}
+
+.map-header {
+  display: flex;
+  justify-content: space-between;
 }
 
 .stats-container {
@@ -635,4 +675,8 @@ html {
 }
 .deaths .tab-selection {
   background-color: #fa5575;
+}
+
+.map-header p {
+  display: none;
 }

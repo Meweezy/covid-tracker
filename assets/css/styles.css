@@ -84,7 +84,7 @@ body {
 
 .search-container {
   display: flex;
-  width: 100%;
+  max-width: 600px;
   padding: 5px;
   justify-content: center;
   align-items: center;
@@ -615,4 +615,24 @@ html {
   .country-flag span {
     margin-left: 0;
   }
+}
+
+.tab-selection {
+  position: absolute;
+  height: 10px;
+  background-color: #cc1034;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.cases .tab-selection {
+  background-color: #cc1034;
+}
+
+.recovered .tab-selection {
+  background-color: #7fd922;
+}
+.deaths .tab-selection {
+  background-color: #fa5575;
 }

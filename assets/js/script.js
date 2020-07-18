@@ -12,25 +12,34 @@ var casesTypeColors = {
   recovered: "#00C853",
   deaths: "#fc3c3c",
 };
+const worldWideSelection = {
+  name: "Worldwide",
+  value: "www",
+  selected: true,
+};
 //var infoWindow;
 
 // Initialize and add the map
 window.onload = () => {
+  getCountriesData();
   getCountryData();
   getHistoricalData();
   // buildPieChart();
   getCurrentData();
   // calcRecoveryRate();
 };
-
+const mapCenter = {
+  lat: 34.80746,
+  lng: -40.4796,
+};
 function initMap() {
   // The location of Germany
-  var germany = { lat: 51.1657, lng: 10.4515 };
+  // var germany = { lat: 51.1657, lng: 10.4515 };
   // The map, centered at Germany
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 3,
     styles: mapStyle,
-    center: germany,
+    center: mapCenter,
   });
 
   //infoWindow = new google.maps.InfoWindow();
@@ -51,16 +60,68 @@ const clearTheMap = () => {
   }
 };
 
-const getCountryData = () => {
+//function to pan to selected location
+const setMapCenter = (lat, long, zoom) => {
+  map.setZoom(zoom);
+  map.panTo({
+    lat: lat,
+    lng: long,
+  });
+};
+
+//initialize country dropdown
+const initDropdown = (searchList) => {
+  $(".ui.dropdown").dropdown({
+    values: searchList,
+    onChange: function (value, text) {
+      if (value !== worldWideSelection.value) {
+        getCountryData(value);
+      } else {
+        getCurrentData();
+      }
+    },
+  });
+};
+
+const setSearchList = (data) => {
+  let searchList = [];
+  searchList.push(worldWideSelection);
+  data.forEach((countryData) => {
+    searchList.push({
+      name: countryData.country,
+      value: countryData.countryInfo.iso3,
+    });
+  });
+
+  initDropdown(searchList);
+};
+
+const getCountriesData = () => {
   fetch("https://disease.sh/v2/countries")
     .then((response) => {
       return response.json();
     })
     .then((data) => {
       globalCountryData = data;
+      setSearchList(data);
       showDataOnMap(data);
       showDataInTable(data);
-      console.log(globalCountryData);
+
+      // console.log(globalCountryData);
+    });
+};
+
+const getCountryData = (countryIso = "") => {
+  const url = "https://disease.sh/v3/covid-19/countries/" + countryIso;
+  console.log(url);
+  fetch(url)
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      setMapCenter(data.countryInfo.lat, data.countryInfo.long, 4);
+      updateCurrentTabs(data);
+      console.log(data);
     });
 };
 
@@ -74,6 +135,7 @@ const getCurrentData = () => {
       // let chartData = buildPieChartData(data);
       // buildPieChart(data);
       updateCurrentTabs(data);
+      setMapCenter(mapCenter.lat, mapCenter.lng, 2);
       calcRecoveryRate(data);
       calcFatalityRate(data);
     });

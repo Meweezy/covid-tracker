@@ -9,6 +9,14 @@
     <title>Covid Tracker</title>
     <link
       rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/dropdown.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/transition.min.css"
+    />
+    <link
+      rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css"
     />
     <link
@@ -89,7 +97,8 @@
           <div class="col-auto col-sm-12 col-md-12 col-lg-7 col-xl-7">
             <div id="stats-container" class="row stats-container">
               <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                <div class="card">
+                <div class="card cases">
+                  <div class="tab-selection"></div>
                   <div class="card-body">
                     <h5 class="card-title">Infected</h5>
                     <h6 class="text-muted card-subtitle mb-2 total-number">
@@ -100,7 +109,8 @@
                 </div>
               </div>
               <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                <div class="card">
+                <div class="card recovered">
+                  <div class="tab-selection"></div>
                   <div class="card-body">
                     <h5 class="card-title">Recovered</h5>
                     <h6 class="text-muted card-subtitle mb-2 recovered-number">
@@ -111,7 +121,8 @@
                 </div>
               </div>
               <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                <div class="card">
+                <div class="card deaths">
+                  <div class="tab-selection"></div>
                   <div class="card-body">
                     <h5 class="card-title">Deaths</h5>
                     <h6 class="text-muted card-subtitle mb-2 deaths-number">
@@ -123,7 +134,7 @@
               </div>
             </div>
             <div id="map-container" class="map-container">
-              <div id="search-container" class="search-container">
+              <!-- <div id="search-container" class="search-container">
                 <input
                   class="d-none float-none"
                   type="text"
@@ -147,6 +158,14 @@
                       <i class="fa fa-search"></i>
                     </button>
                   </div>
+                </div>
+              </div> -->
+              <div id="search-container" class="search-container">
+                <div class="ui fluid search selection dropdown">
+                  <input type="hidden" name="country" />
+                  <i class="dropdown icon"></i>
+                  <div class="default text">Select Country</div>
+                  <div class="menu"></div>
                 </div>
               </div>
               <div id="map"></div>
@@ -246,6 +265,8 @@
     ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/dropdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/transition.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/script.js"></script>
     <script src="assets/js/map-style.js"></script>

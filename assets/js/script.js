@@ -25,9 +25,23 @@ window.onload = () => {
   getHistoricalData();
   // buildPieChart();
   getCurrentData();
+  sortTableData();
+  getTopHeadlines();
+  replaceSmallChar();
   // calcRecoveryRate();
   // console.log(new Date(1595079209 * 1000).toLocaleString());
 };
+
+const replaceSmallChar = () => {
+  let cards = document.querySelectorAll(".stats-container .card");
+  let indexOfM;
+  let indexOfK;
+
+  cards.forEach((card) => {
+    console.log(card.getElementsByTagName("p").innerHTML);
+  });
+};
+
 const mapCenter = {
   lat: 34.80746,
   lng: -40.4796,
@@ -52,7 +66,13 @@ function initMap() {
 const changeDataSelection = (elem, casesType) => {
   clearTheMap();
   showDataOnMap(globalCountryData, casesType);
-  console.log(globalCountryData);
+  setActiveTab(elem);
+};
+
+const setActiveTab = (elem) => {
+  const activeElem = document.querySelector(".card.active");
+  activeElem.classList.remove("active");
+  elem.classList.add("active");
 };
 
 const clearTheMap = () => {
@@ -69,7 +89,11 @@ const setMapCenter = (lat, long, zoom, countryName = "Global") => {
     lng: long,
   });
   document.querySelector(".cases-location").innerHTML = countryName;
-  // console.log(document.querySelector(".cases-location").innerHTML);
+  if (countryName === "Global") {
+    document.querySelector(".news-location").innerHTML = "";
+  } else {
+    document.querySelector(".news-location").innerHTML = " In " + countryName;
+  } // console.log(document.querySelector(".cases-location").innerHTML);
 };
 
 //initialize country dropdown
@@ -154,16 +178,29 @@ const updateCurrentTabs = (data) => {
   let addedRecovered = numeral(data.todayRecovered).format("+0,0");
   let addedDeaths = numeral(data.todayDeaths).format("+0,0");
   let totalCases = numeral(data.cases).format("0.0a");
+  let convTotalCases = totalCases.replace("m", "M");
   let totalRecovered = numeral(data.recovered).format("0.0a");
+  let convTotalRecovered = totalRecovered.replace("m", "M");
   let totalDeaths = numeral(data.deaths).format("0.0a");
+
+  let indexOfM = totalDeaths.indexOf("m");
+  let indexOfK = totalDeaths.indexOf("k");
+  let convTotalDeaths;
+  if (indexOfM > -1) {
+    convTotalDeaths = totalDeaths.replace("m", "M");
+  } else if (indexOfK > -1) {
+    convTotalDeaths = totalDeaths.replace("k", "K");
+  }
   document.querySelector(".total-number").innerHTML = addedCases;
   document.querySelector(".recovered-number").innerHTML = addedRecovered;
   document.querySelector(".deaths-number").innerHTML = addedDeaths;
-  document.querySelector(".cases-total").innerHTML = `${totalCases} Total`;
+  document.querySelector(".cases-total").innerHTML = `${convTotalCases} Total`;
   document.querySelector(
     ".recovered-total"
-  ).innerHTML = `${totalRecovered} Total`;
-  document.querySelector(".deaths-total").innerHTML = `${totalDeaths} Total`;
+  ).innerHTML = `${convTotalRecovered} Total`;
+  document.querySelector(
+    ".deaths-total"
+  ).innerHTML = `${convTotalDeaths} Total`;
 };
 
 //build pie chart
@@ -220,13 +257,16 @@ const buildChartData = (data) => {
   ]
   `;
   let chartData = [];
-
+  let lastDataPoint;
   for (let date in data.cases) {
-    let newDataPoint = {
-      x: date,
-      y: data.cases[date],
-    };
-    chartData.push(newDataPoint);
+    if (lastDataPoint) {
+      let newDataPoint = {
+        x: date,
+        y: data.cases[date] - lastDataPoint, //Calculate daily new cases
+      };
+      chartData.push(newDataPoint);
+    }
+    lastDataPoint = data.cases[date];
   }
   return chartData;
 };
@@ -264,9 +304,9 @@ const getHistoricalData = () => {
     })
     .then((data) => {
       let chartData = buildChartData(data);
-      let recoveredData = buildRecovered(data);
-      let deathsData = buildDeaths(data);
-      buildChart(chartData, recoveredData, deathsData);
+      // let recoveredData = buildRecovered(data);
+      // let deathsData = buildDeaths(data);
+      buildChart(chartData);
     });
 };
 
@@ -285,31 +325,17 @@ const buildChart = (chartData, recoveredData, deathsData) => {
       datasets: [
         {
           label: "Total Cases",
-          backgroundColor: "#1d2c4d",
-          borderColor: "#1d2c4d",
+          backgroundColor: "rgba(93, 99, 106, 0.7)",
+          borderColor: "#0d1319",
           data: chartData,
-          fill: false,
-        },
-        {
-          label: "Total Recovered",
-          backgroundColor: "green",
-          borderColor: "green",
-          data: recoveredData,
-          fill: false,
-        },
-        {
-          label: "Total Deaths",
-          backgroundColor: "red",
-          borderColor: "red",
-          data: deathsData,
-          fill: false,
+          fill: true,
         },
       ],
     },
 
     // Configuration options go here
     options: {
-      maintainAspectRatio: true,
+      maintainAspectRatio: false,
       tooltips: {
         mode: "index",
         intersect: false,
@@ -317,6 +343,11 @@ const buildChart = (chartData, recoveredData, deathsData) => {
       hover: {
         mode: "index",
         intersect: false,
+      },
+      elements: {
+        point: {
+          radius: 0,
+        },
       },
       scales: {
         xAxes: [
@@ -446,7 +477,9 @@ const showDataInTable = (data) => {
            <td class="additional-info">${numeral(country.deaths).format(
              "0,0"
            )}</td>
-           <td>${numeral(country.todayCases).format("+0,0")}</td>
+           <td class="today-column">${numeral(country.todayCases).format(
+             "+0,0"
+           )}</td>
            
          </tr>
       
@@ -666,4 +699,53 @@ const animateFatalityRate = () => {
   } else {
     counter.innerText = target;
   }
+};
+
+const sortTableData = () => {
+  let table, i, x, y;
+  let swichable = true; //boolean for comparing two row items
+  table = document.querySelector(".table");
+  let rows = table.rows;
+  console.log(rows);
+  // while (swichable) {
+  //   switchable = false;
+  //   let rows = table.rows;
+
+  //   for (let i = 1; i < rows.length - 1; i++) {
+  //     var doSwitch = false;
+
+  //     x = rows[i].getElementsByTagName("TD")[0];
+  //     y = rows[i + 1].getElementsByTagName("TD")[0];
+
+  //     if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+  //       doSwitch = true;
+  //       break;
+  //     }
+  //   }
+  //   if (doSwitch) {
+  //     rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+  //     switchable = true;
+  //   }
+  // }
+};
+const getTopHeadlines = (countryCode = "de") => {
+  // const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+  // const qInTitle = "coronavirus";
+  // const country = countryCode;
+  // const from = "";
+  // const apiKey = "e4c75cfb0da04dd783d18368db238bd4";
+  // const url = `${proxyUrl}newsapi.org/v2/top-headlines?country=${country}&qInTitle=${qInTitle}&apiKey=${apiKey}`;
+  // const request = new Request(url);
+  let url =
+    "https://newsapi.org/v2/top-headlines?country=" +
+    countryCode +
+    "&q=coronavirus&apiKey=e4c75cfb0da04dd783d18368db238bd4";
+  // console.log(request);
+  fetch(url)
+    .then((response) => {
+      return response.json;
+    })
+    .then((data) => {
+      console.log(data);
+    });
 };

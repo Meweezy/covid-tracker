@@ -199,7 +199,16 @@ body {
   border-radius: 12px 0 0 12px;
 }
 
-.side-menu-item:hover a {
+.tips-heading {
+  font-size: 1.4rem;
+}
+
+.tips-heading-container {
+  background-color: #3e444a;
+  padding: 10px 10px 15px 10px;
+  /* width: 500px; */
+  color: white;
+  border-radius: 10px;
 }
 
 .side-menu-item i {
@@ -368,7 +377,7 @@ body {
     height: 540px;
   }
   .bar-chart-container {
-    height: 482px !important;
+    height: 500px !important;
   }
 }
 
@@ -434,7 +443,7 @@ body {
   .line-chart-container {
     padding: 0px 10px 20px 10px;
     margin: 0px 0 20px 0px;
-    width: 540px;
+    width: 480px;
     height: 400px;
   }
 }
@@ -499,11 +508,15 @@ body {
 @media (min-width: 1200px) {
   .table-container,
   .pie-chart-container {
-    /* margin: 0px 25px 20px 25px !important; */
+    margin: 0px 25px 20px 25px !important;
   }
   .table-chart-container .row,
   .parent-table-container {
     width: 520px;
+  }
+
+  .parent-table-container h5 {
+    margin-left: 25px;
   }
 }
 
@@ -564,7 +577,6 @@ body {
   text-align: center;
   margin-top: 30px;
   margin-bottom: 30px;
-  border: 1px solid;
 }
 
 @media (min-width: 576px) {
@@ -601,23 +613,33 @@ body {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  background-color: #5d636a;
+  background-color: #fff;
   border-radius: 20px 0px 0px 20px;
+  color: #3e444a;
+}
+
+.donation-heading-container {
+  background-color: #3e444a;
+  color: #fff;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding: 10px 15px 25px 15px;
+  border-radius: 10px;
 }
 
 @media (max-width: 360px) {
-  .main-donation h2 {
+  .main-donation h3 {
     font-size: 0.8rem !important;
   }
 }
 
 @media (max-width: 576px) {
-  .main-donation h2 {
+  .main-donation h3 {
     font-size: 1rem;
   }
 }
 
-.main-donation h2 {
+.main-donation h3 {
   margin-top: 30px;
 }
 
@@ -744,8 +766,8 @@ html {
 }
 
 .radial-circle-outer {
-  width: 63px;
-  height: 63px;
+  width: 70px;
+  height: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -758,8 +780,8 @@ html {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  height: 53px;
-  width: 53px;
+  height: 60px;
+  width: 60px;
   background-color: #eceff1;
   z-index: 100;
   overflow: hidden;
@@ -772,8 +794,8 @@ html {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  height: 53px;
-  width: 53px;
+  height: 60px;
+  width: 60px;
   background-color: #eceff1;
   z-index: 100;
   overflow: hidden;
@@ -875,7 +897,7 @@ html {
   display: none;
 }
 
-/* tbody {
+tbody {
   display: block;
   height: 580px;
   overflow: auto;
@@ -887,7 +909,7 @@ tbody tr {
   width: 100%;
   table-layout: fixed;
 }
-*/
+
 .today-column {
   text-align: center;
 }

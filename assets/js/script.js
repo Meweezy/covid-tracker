@@ -357,6 +357,14 @@ const buildBarChart = (barChartData) => {
     },
     options: {
       maintainAspectRatio: false,
+      tooltips: {
+        mode: "index",
+        intersect: false,
+      },
+      hover: {
+        mode: "index",
+        intersect: false,
+      },
       scales: {
         xAxes: [
           {
@@ -371,7 +379,7 @@ const buildBarChart = (barChartData) => {
               beginAtZero: false,
               mirror: true,
             },
-            fontSize: 40,
+            fontSize: 24,
           },
         ],
       },
@@ -394,7 +402,7 @@ const buildChart = (chartData, recoveredData, deathsData) => {
       datasets: [
         {
           label: "Total Cases",
-          backgroundColor: "rgba(93, 99, 106, 0.7)",
+          backgroundColor: "rgba(93, 99, 106, 0.8)",
           borderColor: "#0d1319",
           data: chartData,
           fill: true,

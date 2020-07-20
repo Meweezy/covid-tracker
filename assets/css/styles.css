@@ -368,7 +368,7 @@ body {
     height: 540px;
   }
   .bar-chart-container {
-    height: 482px;
+    height: 482px !important;
   }
 }
 
@@ -379,7 +379,10 @@ body {
   box-shadow: 2px 3px 6px 1px rgba(0, 0, 0, 0.3);
   border-radius: 20px;
   color: #343a40;
-  height: 350px;
+  height: 315px;
+}
+.bar-chart {
+  height: 100%;
 }
 
 .line-chart-container {
@@ -390,6 +393,9 @@ body {
   color: #343a40;
   width: 300px;
   height: 300px;
+}
+.line-chart {
+  height: 100%;
 }
 
 @media (min-width: 360px) {
@@ -490,7 +496,7 @@ body {
   }
 }
 
-@media (min-width: 1440px) {
+@media (min-width: 1200px) {
   .table-container,
   .pie-chart-container {
     /* margin: 0px 25px 20px 25px !important; */
@@ -714,7 +720,7 @@ html {
   }
 }
 
-@media (min-width: 1440px) {
+@media (min-width: 1200px) {
   .recovery-rate,
   .fatality-rate {
     width: 220px;
@@ -833,7 +839,7 @@ html {
 }
 
 .cases .tab-selection {
-  background-color: #cc1034;
+  background-color: #343a40;
 }
 
 .deaths-number {
@@ -845,7 +851,7 @@ html {
 }
 
 .total-number {
-  color: #cc1034;
+  color: rgba(62, 68, 74, 1);
 }
 
 .stats-container .card > .card-body p {

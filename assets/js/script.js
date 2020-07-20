@@ -143,7 +143,7 @@ const buildBarChartData = (data) => {
     };
     barChartData.push(newDataPoint);
   });
-  console.log(barChartData);
+  // console.log(barChartData);
   return barChartData;
 };
 
@@ -154,7 +154,6 @@ const getCountryData = (countryIso = "") => {
       return response.json();
     })
     .then((data) => {
-      console.log(data);
       setMapCenter(
         data.countryInfo.lat,
         data.countryInfo.long,
@@ -215,7 +214,7 @@ const updateCurrentTabs = (data) => {
 
 //build pie chart
 const buildPieChart = (pieChartData) => {
-  console.log(pieChartData);
+  // console.log(pieChartData);
   var ctx = document.getElementById("pieChart").getContext("2d");
   var chart = new Chart(ctx, {
     // The type of chart we want to create
@@ -540,9 +539,12 @@ const showDataInTable = (data) => {
     html += `
     
           <tr>
-          
             <td class="country-flag">
             <img width = 40px src="${country.countryInfo.flag}" />
+            
+            </td>
+            
+            <td>
             <span>
                 ${country.country}   </span>
             </td>
@@ -570,11 +572,11 @@ const showDataInTable = (data) => {
 function searchCountries(url, countries) {
   countries = getAllCases(url)
     .then((response) => {
-      console.log(response);
+      // console.log(response);
       let index = 1;
       clearLocations();
       for (let country of response) {
-        console.log(country);
+        // console.log(country);
         showMarkers(country, index);
         index++;
       }

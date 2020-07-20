@@ -22,24 +22,13 @@ const worldWideSelection = {
 window.onload = () => {
   getCountriesData();
   getCountryData();
+  getContinentsData();
   getHistoricalData();
   // buildPieChart();
   getCurrentData();
   sortTableData();
-  getTopHeadlines();
-  replaceSmallChar();
   // calcRecoveryRate();
   // console.log(new Date(1595079209 * 1000).toLocaleString());
-};
-
-const replaceSmallChar = () => {
-  let cards = document.querySelectorAll(".stats-container .card");
-  let indexOfM;
-  let indexOfK;
-
-  cards.forEach((card) => {
-    console.log(card.getElementsByTagName("p").innerHTML);
-  });
 };
 
 const mapCenter = {
@@ -89,11 +78,7 @@ const setMapCenter = (lat, long, zoom, countryName = "Global") => {
     lng: long,
   });
   document.querySelector(".cases-location").innerHTML = countryName;
-  if (countryName === "Global") {
-    document.querySelector(".news-location").innerHTML = "";
-  } else {
-    document.querySelector(".news-location").innerHTML = " In " + countryName;
-  } // console.log(document.querySelector(".cases-location").innerHTML);
+  // console.log(document.querySelector(".cases-location").innerHTML);
 };
 
 //initialize country dropdown
@@ -138,14 +123,38 @@ const getCountriesData = () => {
     });
 };
 
+const getContinentsData = () => {
+  fetch("https://disease.sh/v3/covid-19/continents")
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      let barChartData = buildBarChartData(data);
+      buildBarChart(barChartData);
+    });
+};
+
+const buildBarChartData = (data) => {
+  let barChartData = [];
+  data.map((continent) => {
+    let newDataPoint = {
+      x: continent.cases,
+      y: continent.continent,
+    };
+    barChartData.push(newDataPoint);
+  });
+  console.log(barChartData);
+  return barChartData;
+};
+
 const getCountryData = (countryIso = "") => {
   const url = "https://disease.sh/v3/covid-19/countries/" + countryIso;
-  console.log(url);
   fetch(url)
     .then((response) => {
       return response.json();
     })
     .then((data) => {
+      console.log(data);
       setMapCenter(
         data.countryInfo.lat,
         data.countryInfo.long,
@@ -153,7 +162,6 @@ const getCountryData = (countryIso = "") => {
         data.country
       );
       updateCurrentTabs(data);
-      console.log(data);
     });
 };
 
@@ -190,6 +198,8 @@ const updateCurrentTabs = (data) => {
     convTotalDeaths = totalDeaths.replace("m", "M");
   } else if (indexOfK > -1) {
     convTotalDeaths = totalDeaths.replace("k", "K");
+  } else {
+    convTotalDeaths = totalDeaths;
   }
   document.querySelector(".total-number").innerHTML = addedCases;
   document.querySelector(".recovered-number").innerHTML = addedRecovered;
@@ -308,6 +318,65 @@ const getHistoricalData = () => {
       // let deathsData = buildDeaths(data);
       buildChart(chartData);
     });
+};
+
+//build bar chart
+const buildBarChart = (barChartData) => {
+  var ctx = document.getElementById("hBarChart").getContext("2d");
+  var chart = new Chart(ctx, {
+    type: "horizontalBar",
+    data: {
+      datasets: [
+        {
+          label: "Confirmed Cases",
+          backgroundColor: "rgba(62, 68, 74, 0.8)",
+          borderColor: "rgba(62, 68, 74, 1)",
+          borderWidth: 1,
+          barPercentage: 0.5,
+          barThickness: 6,
+          maxBarThickness: 8,
+          minBarLength: 2,
+          data: [
+            barChartData[0].x,
+            barChartData[1].x,
+            barChartData[2].x,
+            barChartData[3].x,
+            barChartData[4].x,
+            barChartData[5].x,
+          ],
+        },
+      ],
+      labels: [
+        barChartData[0].y,
+        barChartData[1].y,
+        barChartData[2].y,
+        barChartData[3].y,
+        barChartData[4].y,
+        barChartData[5].y,
+      ],
+    },
+    options: {
+      maintainAspectRatio: false,
+      scales: {
+        xAxes: [
+          {
+            gridLines: {
+              offsetGridLines: true,
+            },
+          },
+        ],
+        yAxis: [
+          {
+            ticks: {
+              beginAtZero: false,
+              mirror: true,
+            },
+            fontSize: 40,
+          },
+        ],
+      },
+    },
+  });
 };
 
 //build line chart

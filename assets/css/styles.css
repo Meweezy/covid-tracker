@@ -339,14 +339,47 @@ body {
   padding: 15px 25px 0 25px;
 }
 
-.map-container,
-.news-container {
+.map-container {
   background-color: white;
   padding: 20px;
   margin: 20px 25px 20px 25px;
   box-shadow: 2px 3px 6px 1px rgba(0, 0, 0, 0.3);
   border-radius: 20px;
   color: #343a40;
+}
+
+@media (width: 1024px) {
+  .map-container {
+    height: 900px;
+  }
+  #map {
+    height: 830px;
+  }
+
+  .bar-chart-container {
+    height: 310px;
+  }
+}
+@media (min-width: 1200px) {
+  .map-container {
+    height: 615px;
+  }
+  #map {
+    height: 540px;
+  }
+  .bar-chart-container {
+    height: 482px;
+  }
+}
+
+.bar-chart-container {
+  background-color: white;
+  padding: 20px;
+  margin: 20px 25px 20px 25px;
+  box-shadow: 2px 3px 6px 1px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  color: #343a40;
+  height: 350px;
 }
 
 .line-chart-container {
@@ -387,8 +420,8 @@ body {
   .line-chart-container {
     padding: 0px 10px 20px 10px;
     margin: 0px 0 20px 0px;
-    width: 400px;
-    height: 400px;
+    width: 350px;
+    height: 350px;
   }
 }
 @media (min-width: 1200px) {
@@ -862,4 +895,5 @@ tbody tr {
   margin-top: 15px;
   margin-bottom: 20px;
   border-radius: 12px;
+  box-shadow: 2px 3px 6px 1px rgba(0, 0, 0, 0.3);
 }

@@ -612,7 +612,7 @@ body {
 }
 @media (min-width: 1200px) {
   .donation-info-wrapper {
-    width: 840px !important;
+    width: 1200px !important;
   }
 }
 

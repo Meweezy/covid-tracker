@@ -179,18 +179,29 @@ body {
   width: 120px;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 992px) {
   .side-menu-item:hover {
     background-color: #e1e2e1;
     transition: 0.5s;
-    border-radius: 12px 12px 0 0 !important;
+    border-radius: 12px 0 0 12px !important;
+  }
+  .side-menu-item-active {
+    background-color: #5d636a;
+    transition: 0.5s;
+    border-radius: 12px 0 0 12px !important;
   }
 }
 
 .side-menu-item:hover {
   background-color: #5d636a;
   transition: 0.5s;
-  border-radius: 12px 0 0 12px;
+  border-radius: 12px 12px 0 0;
+}
+
+.side-menu-item-active {
+  background-color: #5d636a;
+  transition: 0.5s;
+  border-radius: 12px 12px 0 0;
 }
 
 .side-menu-item:focus {
@@ -572,6 +583,39 @@ body {
   margin-bottom: 15px;
 }
 
+.donation-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border-radius: 20px;
+  margin-top: 30px;
+  padding: 20px;
+  width: 300px;
+}
+
+@media (min-width: 360px) {
+  .donation-info-wrapper {
+    width: 350px !important;
+  }
+}
+@media (min-width: 576px) {
+  .donation-info-wrapper {
+    width: 720px !important;
+  }
+}
+@media (min-width: 992px) {
+  .donation-info-wrapper {
+    width: 840px !important;
+  }
+}
+@media (min-width: 1200px) {
+  .donation-info-wrapper {
+    width: 840px !important;
+  }
+}
+
 .donation-card {
   max-width: 300px;
   text-align: center;
@@ -613,9 +657,9 @@ body {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  background-color: #fff;
+  background-color: #5d636a;
   border-radius: 20px 0px 0px 20px;
-  color: #3e444a;
+  color: #fff;
 }
 
 .donation-heading-container {
@@ -623,24 +667,35 @@ body {
   color: #fff;
   margin-top: 15px;
   margin-bottom: 15px;
-  padding: 10px 15px 25px 15px;
+  padding: 0px 15px 25px 15px;
   border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  width: 70%;
 }
 
-@media (max-width: 360px) {
+@media (min-width: 360px) {
   .main-donation h3 {
     font-size: 0.8rem !important;
   }
 }
 
-@media (max-width: 576px) {
+@media (min-width: 576px) {
   .main-donation h3 {
-    font-size: 1rem;
+    font-size: 1.3rem !important;
+  }
+}
+@media (min-width: 1200px) {
+  .main-donation h3 {
+    font-size: 1.8rem !important;
   }
 }
 
 .main-donation h3 {
   margin-top: 30px;
+  font-size: 0.8rem;
 }
 
 .donation-card .card a {

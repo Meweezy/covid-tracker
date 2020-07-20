@@ -26,7 +26,7 @@ window.onload = () => {
   getHistoricalData();
   // buildPieChart();
   getCurrentData();
-  sortTableData();
+  setMenuItemActive();
   // calcRecoveryRate();
   // console.log(new Date(1595079209 * 1000).toLocaleString());
 };
@@ -523,18 +523,6 @@ const showDataInTable = (data) => {
   let html = "";
   const tableOnPage = document.getElementById("tableOnPage");
 
-  // data.map((country) => {
-  //   tableOnPage.innerHTML = `
-
-  //       <tr>
-  //         <th scope="row">${country.country}</th>
-  //         <td>${country.cases}</td>
-  //         <td>${country.recovered}</td>
-  //         <td>${country.deaths}</td>
-  //       </tr>
-
-  //   `;
-  // });
   data.forEach((country) => {
     html += `
     
@@ -584,13 +572,6 @@ function searchCountries(url, countries) {
     .catch((error) => {
       console.log(error);
     });
-
-  //  console.log(countries);
-  // for (let country of countries) {
-  //   //console.log(country);
-  //   //console.log(foundCountries);
-  //   showMarkers(countries);
-  // }
 }
 
 //Show Markers
@@ -606,19 +587,6 @@ function showMarkers(countries, index, timeout) {
   var totalCases = countries.cases;
   var totalRecovered = countries.recovered;
   var totalDeaths = countries.deaths;
-
-  // for (var country in countries) {
-  //   //console.log(country.country);
-  //   var latlng = new google.maps.LatLng(
-  //     // country["latitude"],
-  //     countries.countryInfo["latitude"],
-  //     countries.countryInfo["longitude"]
-  //   );
-  //   console.log("Latitued: " + countries.countryInfo["latitude"]);
-  //   var name = country["country"];
-  //   var totalCases = country["cases"];
-  //   var totalRecovered = country["recovered"];
-  //   var totalDeaths = country["deaths"];
 
   bounds.extend(latlng);
 
@@ -780,51 +748,8 @@ const animateFatalityRate = () => {
   }
 };
 
-const sortTableData = () => {
-  let table, i, x, y;
-  let swichable = true; //boolean for comparing two row items
-  table = document.querySelector(".table");
-  let rows = table.rows;
-  console.log(rows);
-  // while (swichable) {
-  //   switchable = false;
-  //   let rows = table.rows;
-
-  //   for (let i = 1; i < rows.length - 1; i++) {
-  //     var doSwitch = false;
-
-  //     x = rows[i].getElementsByTagName("TD")[0];
-  //     y = rows[i + 1].getElementsByTagName("TD")[0];
-
-  //     if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-  //       doSwitch = true;
-  //       break;
-  //     }
-  //   }
-  //   if (doSwitch) {
-  //     rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-  //     switchable = true;
-  //   }
-  // }
-};
-const getTopHeadlines = (countryCode = "de") => {
-  // const proxyUrl = "https://cors-anywhere.herokuapp.com/";
-  // const qInTitle = "coronavirus";
-  // const country = countryCode;
-  // const from = "";
-  // const apiKey = "e4c75cfb0da04dd783d18368db238bd4";
-  // const url = `${proxyUrl}newsapi.org/v2/top-headlines?country=${country}&qInTitle=${qInTitle}&apiKey=${apiKey}`;
-  // const request = new Request(url);
-  let url =
-    "https://newsapi.org/v2/top-headlines?country=" +
-    countryCode +
-    "&q=coronavirus&apiKey=e4c75cfb0da04dd783d18368db238bd4";
-  // console.log(request);
-  fetch(url)
-    .then((response) => {
-      return response.json;
-    })
-    .then((data) => {
-      console.log(data);
-    });
-};
+// const setMenuItemActive = (elem) => {
+//   const activeMenuItem = document.querySelector(".side-menu-item-active");
+//   activeMenuItem.classList.remove(".side-menu-item-active");
+//   elem.classList.add(".side-menu-item-active");
+// };

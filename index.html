@@ -32,16 +32,24 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.css"
+    />
 
     <link rel="stylesheet" href="assets/css/styles.css" />
-    <link rel="stylesheet" href="assets/slick/slick.css" />
-    <!-- <link rel="stylesheet" href="assets/slick/slick-theme.css" /> -->
+
     <script src="assets/js/script.js"></script>
     <script src="assets/js/map-style.js"></script>
     <script
       async
       defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoiY_5YWBWCEt1MXx7raTUTic8mb35r44&callback=initMap"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/adf5b3e4d3.js"
+      crossorigin="anonymous"
     ></script>
   </head>
 
@@ -203,9 +211,14 @@
                       <thead>
                         <tr>
                           <th scope="col">Country</th>
-                          <th scope="col"></th>
+                          <!-- <th scope="col"></th> -->
 
-                          <th scope="col">Infected</th>
+                          <th scope="col" onclick="sortTableData('cases');">
+                            <div class="sortable-column">
+                              <span>Infected</span
+                              ><i class="material-icons">keyboard_arrow_down</i>
+                            </div>
+                          </th>
                           <th class="additional-info" scope="col">
                             Recovered
                           </th>
@@ -256,6 +269,14 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"
+    ></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
       integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"

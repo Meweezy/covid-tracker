@@ -6,6 +6,7 @@ let recoveryRate;
 let fatalityRate;
 let globalCountryData;
 let mapCircles = [];
+let sortDirection = true;
 var casesTypeColors = {
   cases: "#3e444a",
   recovered: "#00C853",
@@ -29,6 +30,9 @@ window.onload = () => {
   setMenuItemActive();
   // calcRecoveryRate();
   // console.log(new Date(1595079209 * 1000).toLocaleString());
+  $(document).ready(function () {
+    $("#table").DataTable();
+  });
 };
 
 const mapCenter = {
@@ -117,7 +121,8 @@ const getCountriesData = () => {
       globalCountryData = data;
       setSearchList(data);
       showDataOnMap(data);
-      showDataInTable(data);
+      // showDataInTable(data);
+      sortTableData("cases");
 
       // console.log(globalCountryData);
     });
@@ -517,9 +522,45 @@ const showDataOnMap = (data, casesType = "cases") => {
 //     return response.json();
 //   });
 // };
+const sortTableData = (columnName) => {
+  const dataType = typeof globalCountryData[0][columnName];
+  const sortableColumnHeader = document.querySelector(".sortable-column");
+  const sortableColumnIcon = document
+    .querySelector(".sortable-column")
+    .getElementsByTagName("i");
 
+  // sortableColumnHeader.removeChild(sortableColumnHeader.childNodes[2]);
+
+  sortDirection = !sortDirection;
+
+  if (sortDirection) {
+    sortableColumnHeader.removeChild(sortableColumnHeader.childNodes[2]);
+    sortableColumnHeader.appendChild(document.createElement("i"));
+    console.log(sortableColumnIcon);
+    // sortableColumnIcon.classList.add("material_icons");
+    sortableColumnIcon.innerHTML = "keyboard_arrow_up";
+  } else {
+    sortableColumnIcon.innerHTML = "keyboard_arrow_down";
+  }
+
+  switch (dataType) {
+    case "number":
+      sortNumberColumn(sortDirection, columnName);
+      break;
+  }
+  showDataInTable(globalCountryData);
+};
+
+const sortNumberColumn = (sort, columnName) => {
+  globalCountryData = globalCountryData.sort((c1, c2) => {
+    return sort
+      ? c1[columnName] - c2[columnName]
+      : c2[columnName] - c1[columnName];
+  });
+};
 //Display data in table
 const showDataInTable = (data) => {
+  // sortTableData(columnName);
   let html = "";
   const tableOnPage = document.getElementById("tableOnPage");
 
@@ -527,15 +568,15 @@ const showDataInTable = (data) => {
     html += `
     
           <tr>
-            <td class="country-flag">
+           
+          <td class="country-flag">
+          <div class="country-cell"> 
             <img width = 40px src="${country.countryInfo.flag}" />
-            
-            </td>
-            
-            <td>
             <span>
                 ${country.country}   </span>
             </td>
+            
+            
             <td>${numeral(country.cases).format("0,0")}</td>
            
            <td class="additional-info">${numeral(country.recovered).format(

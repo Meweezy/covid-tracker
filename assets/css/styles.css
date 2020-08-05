@@ -582,6 +582,9 @@ body {
 .stats-container .card {
   margin-bottom: 15px;
 }
+.sortable-column {
+  display: flex;
+}
 
 .donation-info-wrapper {
   display: flex;
@@ -979,4 +982,12 @@ tbody tr {
   margin-bottom: 20px;
   border-radius: 12px;
   box-shadow: 2px 3px 6px 1px rgba(0, 0, 0, 0.3);
+}
+
+.country-cell {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+  width: 150px;
+  padding-right: 30px;
 }

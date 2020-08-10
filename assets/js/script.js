@@ -85,6 +85,15 @@ const setMapCenter = (lat, long, zoom, countryName = "Global") => {
   // console.log(document.querySelector(".cases-location").innerHTML);
 };
 
+// const openInfoWindow = (content, position) => {
+//   var infoWindow = new google.maps.InfoWindow({
+//     content: content,
+//     position: position,
+//   });
+
+//   infoWindow.open(map);
+// };
+
 //initialize country dropdown
 const initDropdown = (searchList) => {
   $(".ui.dropdown").dropdown({
@@ -92,6 +101,7 @@ const initDropdown = (searchList) => {
     onChange: function (value, text) {
       if (value !== worldWideSelection.value) {
         getCountryData(value);
+        // openInfoWindow(infoWindowContent, { lat: 51, lng: 10 });
       } else {
         getCurrentData();
       }
@@ -101,6 +111,7 @@ const initDropdown = (searchList) => {
 
 const setSearchList = (data) => {
   let searchList = [];
+  let html;
   searchList.push(worldWideSelection);
   data.forEach((countryData) => {
     searchList.push({
@@ -190,21 +201,31 @@ const updateCurrentTabs = (data) => {
   let addedRecovered = numeral(data.todayRecovered).format("+0,0");
   let addedDeaths = numeral(data.todayDeaths).format("+0,0");
   let totalCases = numeral(data.cases).format("0.0a");
-  let convTotalCases = totalCases.replace("m", "M");
+  // let convTotalCases = totalCases.replace("m", "M");
   let totalRecovered = numeral(data.recovered).format("0.0a");
-  let convTotalRecovered = totalRecovered.replace("m", "M");
+  // let convTotalRecovered = totalRecovered.replace("m", "M");
   let totalDeaths = numeral(data.deaths).format("0.0a");
 
-  let indexOfM = totalDeaths.indexOf("m");
-  let indexOfK = totalDeaths.indexOf("k");
-  let convTotalDeaths;
-  if (indexOfM > -1) {
-    convTotalDeaths = totalDeaths.replace("m", "M");
-  } else if (indexOfK > -1) {
-    convTotalDeaths = totalDeaths.replace("k", "K");
-  } else {
-    convTotalDeaths = totalDeaths;
+  let casesIndexOfM = [totalCases, totalRecovered, totalDeaths];
+  let convCasesIndex = [];
+
+  for (let [mIndex, mValue] of casesIndexOfM.entries()) {
+    if (mValue.indexOf("m") > -1) {
+      convCasesIndex.push(casesIndexOfM[mIndex].replace("m", "M"));
+      console.log(convCasesIndex);
+    } else if (mValue.indexOf("k") > -1) {
+      console.log(mValue.replace("k", "K"));
+      convCasesIndex.push(casesIndexOfM[mIndex].replace("k", "K"));
+    } else {
+      console.log(mValue);
+      convCasesIndex.push(mValue);
+    }
+    console.log(convCasesIndex);
+    convTotalCases = convCasesIndex[0];
+    convTotalRecovered = convCasesIndex[1];
+    convTotalDeaths = convCasesIndex[2];
   }
+
   document.querySelector(".total-number").innerHTML = addedCases;
   document.querySelector(".recovered-number").innerHTML = addedRecovered;
   document.querySelector(".deaths-number").innerHTML = addedDeaths;

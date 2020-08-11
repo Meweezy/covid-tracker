@@ -17,7 +17,8 @@ const worldWideSelection = {
   value: "www",
   selected: true,
 };
-//var infoWindow;
+let infoWindow;
+let prevInfoWindow;
 
 // Initialize and add the map
 window.onload = () => {
@@ -49,7 +50,7 @@ function initMap() {
     center: mapCenter,
   });
 
-  //infoWindow = new google.maps.InfoWindow();
+  infoWindow = new google.maps.InfoWindow();
   // The marker, positioned at germany
   //var marker = new google.maps.Marker({ position: germany, map: map });
   //searchCountries(url, countries);
@@ -75,24 +76,54 @@ const clearTheMap = () => {
 };
 
 //function to pan to selected location
-const setMapCenter = (lat, long, zoom, countryName = "Global") => {
+const setMapCenter = (lat, long, zoom, countryName = "Global", data) => {
+  let html = `
+    <div class="info-container">
+    <div class="info-header">
+      <div class="info-flag" style="background-image: url(${
+        data.countryInfo.flag
+      })"></div>
+
+        <div class="info-name">${countryName}</div>
+    </div>
+        <div class="info-confirmed">Total Cases:<span> ${numeral(
+          data.cases
+        ).format("0,0")}</span></div>
+        <div class="info-active">Active Cases:<span> ${numeral(
+          data.active
+        ).format("0,0")}</span></div>
+        <div class="info-deaths">Total Deaths:<span> ${numeral(
+          data.deaths
+        ).format("0,0")}</span></div>
+        <div class="info-recovered">Total Recovered:<span> ${numeral(
+          data.recovered
+        ).format("0,0")}</span></div>
+    </div>
+
+    `;
   map.setZoom(zoom);
   map.panTo({
     lat: lat,
     lng: long,
   });
+
+  openInfoWindow(html, { lat: lat, lng: long });
   document.querySelector(".cases-location").innerHTML = countryName;
   // console.log(document.querySelector(".cases-location").innerHTML);
 };
 
-// const openInfoWindow = (content, position) => {
-//   var infoWindow = new google.maps.InfoWindow({
-//     content: content,
-//     position: position,
-//   });
+const openInfoWindow = (content, position) => {
+  infoWindow.setContent(content);
+  infoWindow.setPosition(position);
 
-//   infoWindow.open(map);
-// };
+  map.addListener("bounds_changed", function () {
+    infoWindow.open(map);
+  });
+  if (prevInfoWindow) {
+    prevInfoWindow.close();
+  }
+  prevInfoWindow = infoWindow;
+};
 
 //initialize country dropdown
 const initDropdown = (searchList) => {
@@ -174,9 +205,11 @@ const getCountryData = (countryIso = "") => {
         data.countryInfo.lat,
         data.countryInfo.long,
         4,
-        data.country
+        data.country,
+        data
       );
       updateCurrentTabs(data);
+      //update chart data below
     });
 };
 
@@ -190,7 +223,7 @@ const getCurrentData = () => {
       // let chartData = buildPieChartData(data);
       // buildPieChart(data);
       updateCurrentTabs(data);
-      setMapCenter(mapCenter.lat, mapCenter.lng, 2);
+      // setMapCenter(mapCenter.lat, mapCenter.lng, 2, data);
       calcRecoveryRate(data);
       calcFatalityRate(data);
     });
@@ -208,19 +241,14 @@ const updateCurrentTabs = (data) => {
 
   let casesIndexOfM = [totalCases, totalRecovered, totalDeaths];
   let convCasesIndex = [];
-
   for (let [mIndex, mValue] of casesIndexOfM.entries()) {
     if (mValue.indexOf("m") > -1) {
       convCasesIndex.push(casesIndexOfM[mIndex].replace("m", "M"));
-      console.log(convCasesIndex);
     } else if (mValue.indexOf("k") > -1) {
-      console.log(mValue.replace("k", "K"));
       convCasesIndex.push(casesIndexOfM[mIndex].replace("k", "K"));
     } else {
-      console.log(mValue);
       convCasesIndex.push(mValue);
     }
-    console.log(convCasesIndex);
     convTotalCases = convCasesIndex[0];
     convTotalRecovered = convCasesIndex[1];
     convTotalDeaths = convCasesIndex[2];

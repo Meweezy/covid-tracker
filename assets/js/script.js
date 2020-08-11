@@ -19,6 +19,11 @@ const worldWideSelection = {
 };
 let infoWindow;
 let prevInfoWindow;
+let datasetId = 0;
+let histTotalCases;
+let histTotalRecovered;
+let histTotalDeaths;
+var chart;
 
 // Initialize and add the map
 window.onload = () => {
@@ -57,10 +62,14 @@ function initMap() {
   // //Get JSON Data
 }
 
-const changeDataSelection = (elem, casesType) => {
+const changeDataSelection = (elem, casesType, newDatasetId) => {
   clearTheMap();
   showDataOnMap(globalCountryData, casesType);
   setActiveTab(elem);
+  buildChart(histTotalCases, histTotalRecovered, histTotalDeaths, newDatasetId);
+  console.log(histTotalDeaths);
+  // datasetId = newDatasetId;
+  // console.log(datasetId);
 };
 
 const setActiveTab = (elem) => {
@@ -336,26 +345,34 @@ const buildChartData = (data) => {
 
 const buildRecovered = (data) => {
   let recoveredData = [];
+  let lastDataPoint;
 
   for (let date in data.recovered) {
-    let newDataPoint = {
-      x: date,
-      y: data.recovered[date],
-    };
-    recoveredData.push(newDataPoint);
+    if (lastDataPoint) {
+      let newDataPoint = {
+        x: date,
+        y: data.recovered[date] - lastDataPoint,
+      };
+      recoveredData.push(newDataPoint);
+    }
+    lastDataPoint = data.recovered[date];
   }
   return recoveredData;
 };
 
 const buildDeaths = (data) => {
   let deathsData = [];
+  let lastDataPoint;
 
   for (let date in data.deaths) {
-    let newDataPoint = {
-      x: date,
-      y: data.deaths[date],
-    };
-    deathsData.push(newDataPoint);
+    if (lastDataPoint) {
+      let newDataPoint = {
+        x: date,
+        y: data.deaths[date] - lastDataPoint,
+      };
+      deathsData.push(newDataPoint);
+    }
+    lastDataPoint = data.deaths[date];
   }
   return deathsData;
 };
@@ -367,9 +384,10 @@ const getHistoricalData = () => {
     })
     .then((data) => {
       let chartData = buildChartData(data);
-      // let recoveredData = buildRecovered(data);
-      // let deathsData = buildDeaths(data);
-      buildChart(chartData);
+      let recoveredData = buildRecovered(data);
+      let deathsData = buildDeaths(data);
+      buildChart(chartData, recoveredData, deathsData, datasetId);
+      //updateChart()
     });
 };
 
@@ -440,12 +458,52 @@ const buildBarChart = (barChartData) => {
   });
 };
 
+const updateChartData = (chart, label, data) => {
+  chart.data.labels.push(label);
+  chart.data.datasets.forEach((dataset) => {
+    dataset.data.push(data);
+  });
+  chart.update();
+};
+
 //build line chart
-const buildChart = (chartData, recoveredData, deathsData) => {
+const buildChart = (chartData, recoveredData, deathsData, newDatasetId = 0) => {
+  histTotalCases = chartData;
+  histTotalRecovered = recoveredData;
+  histTotalDeaths = deathsData;
+  let datasetData = [
+    {
+      label: "Total Cases",
+      backgroundColor: "rgba(93, 99, 106, 0.8)",
+      borderColor: "#0d1319",
+      data: chartData,
+      fill: true,
+    },
+    {
+      label: "Total Recovered",
+      backgroundColor: "rgba(127, 217, 34, 0.8)",
+      borderColor: "#7fd922",
+      data: recoveredData,
+      fill: true,
+    },
+    {
+      label: "Total Deaths",
+      backgroundColor: "rgba(250, 85, 117, 0.8)",
+      borderColor: "#fa5575",
+      data: deathsData,
+      fill: true,
+    },
+  ];
+
+  // console.log(datasetData[newDatasetId]);
+
   var timeFormat = "MM/DD/YYYY";
 
   var ctx = document.getElementById("myChart").getContext("2d");
-  var chart = new Chart(ctx, {
+  if (typeof chart != "undefined") {
+    chart.destroy();
+  }
+  chart = new Chart(ctx, {
     // The type of chart we want to create
     type: "line",
 
@@ -453,13 +511,16 @@ const buildChart = (chartData, recoveredData, deathsData) => {
     data: {
       // labels: ["January", "February", "March", "April", "May", "June", "July"],
       datasets: [
-        {
-          label: "Total Cases",
-          backgroundColor: "rgba(93, 99, 106, 0.8)",
-          borderColor: "#0d1319",
-          data: chartData,
-          fill: true,
-        },
+        // {
+        //   label: "Total Cases",
+        //   backgroundColor: "rgba(93, 99, 106, 0.8)",
+        //   borderColor: "#0d1319",
+        //   data: chartData,
+        //   fill: true,
+        // },
+
+        datasetData[newDatasetId],
+        // updateChartData(chart, "Test", 1),
       ],
     },
 
@@ -501,6 +562,7 @@ const buildChart = (chartData, recoveredData, deathsData) => {
       },
     },
   });
+  chart.update();
 };
 
 const showDataOnMap = (data, casesType = "cases") => {

@@ -682,7 +682,7 @@ const showDataInTable = (data) => {
            
           <td class="country-flag">
           <div class="country-cell"> 
-            <img width = 40px src="${country.countryInfo.flag}" />
+            <img width = 30px src="${country.countryInfo.flag}" />
             <span>
                 ${country.country}   </span>
             </td>
